@@ -1,22 +1,86 @@
-# How to MyST, without being mystified 🧙
-
-A tutorial to evolve markdown documents and notebooks into structured data
-
-**Authors:** Rowan Cockett<sup>1,2</sup> \
-**Affiliations:** <sup>1</sup>Executable Books, <sup>2</sup> Curvenote \
-**License:** CC-BY
-
-**Abstract**
-
-We introduce, a set of open-source, community-driven tools for MyST Markdown ([myst.tools](https://myst.tools)) designed for scientific communication, including a powerful authoring framework that supports blogs, online books, scientific papers, reports and journals articles.
+---
+title: Analysing 2-dimensional urban form around Freiburg's weather stations with respect to air temperature
+subject: Tutorial
+subtitle: Evolve your markdown documents into structured data
+short_title: How to MyST
+authors:
+  - name: Lisa Winkler
+    affiliations:
+      - University of Freiburg
+    orcid: 0000-0002-7859-8394
+    email: lisa.winkler@meteo.uni-freiburg.de
+license: CC-BY-4.0
+keywords: myst, markdown, open-science
+abstract: |
+  Calculating urban form parameters, aggregating to 100m, completing a principal component analysis, and analysing with respect to temperature
+---
 
 ## Background
 
 Scientific communication today is designed around print documents and pay-walled access to content. Over the last decade, the open-science movement has accelerated the use of pre-print services and data archives that are vastly improving the accessibility of scientific content. However, these systems are not designed for communicating modern scientific outputs, which encompasses **so much more** than a paper-centric model of the scholarly literature.
 
+### Urban form parameters
+| **Category**    | **Parameter**                             | **Abbrev.** | **Unit**  | **Element**            | **Aggregation**         | **Equation**                           |
+|------------------|-------------------------------------------|-------------|-----------|-------------------------|--------------------------|-----------------------------------------|
+| Dimension        | Building Area                            | BuAre       | m²        | Building               | count, sum, mean, std , median, min , max    |                                         |
+| Dimension        | Building Height                          | BuHt        | m²        | Building               | sum, mean, std     |                                         |
+| Dimension        | Building Perimeter                       | BuPer       | m         | Building               | sum, mean, variance     |                                         |
+| Dimension        | Longest Axis Length                      | BuLAL       | m         | Building               | sum, mean, variance     |                                         |
+| Dimension        | Centroid Corner Distance                 | BuCCD       | m         | Building               | sum, mean, variance     |                                         |
+| Dimension        | Number of Corners                        | BuCor       | m         | Building               | sum, mean, variance     |                                         |
+| Dimension        | Courtyard Area                           | CyAre       | m         | Building               | sum, mean, variance     |                                         |
+| Dimension        | Courtyard Index                          | CyInd       | ratio     | Building               | mean                    |                                         |
+| Shape            | Circular Compactness                    | BuCCo       |           | Building               |                          |                                         |
+| Shape            | Compactness Weighted Axis               | BuCWA       |           | Building               |                          |                                         |
+| Shape            | Convexity                                | BuCon       |           | Building               |                          |                                         |
+| Shape            | Elongation                               | BuElo       |           | Building               |                          |                                         |
+| Shape            | Equivalent Rectangular Index            | BuERI       |           | Building               |                          |                                         |
+| Shape            | Facade Ratio                            | BuFR        |           | Building               |                          | $area/perimeter$                       |
+| Shape            | Form Factor                             | BuFF        |           | Building               |                          |                                         |
+| Shape            | Fractal Dimension                       | BuFD        |           | Building               |                          |                                         |
+| Shape            | Rectangularity                          | BuRec       |           | Building               |                          |                                         |
+| Shape            | Shape Index                             | BuShI       |           | Building               |                          |                                         |
+| Shape            | Square Compactness                     | BuSqC       |           | Building               |                          |                                         |
+| Shape            | Squareness                              | BuSqu       |           | Building               |                          |                                         |
+| Proximity        | Building Adjacency                      | BuAdj       | ratio     | Neighbourhood          | -                        | $BuAdj_{blg} = \frac{\sum blg_{adj}}{\sum blg}$ |
+| Proximity        | Mean Inter-Building Distance            | IBD         | m         | Neighbourhood          | -                        | $IBD_{blg} = \frac{1}{n} \sum_{i=1}^{n} d_{blg, blg_i}$ |
+| Proximity        | Shared Walls Ratio                      | SWR         | m²        | Building               | mean                    |                                         |
+| Orientation      | Orientation                             | BuOri       | deg       | Building               | sum, mean, variance     |                                         |
+| Orientation      | Alignment                               | BuAli       | deg       | Building               | sum, mean, variance     | $\frac{1}{n} \sum_{i=1}^{n} dev_i = \frac{dev_1 + dev_2 + \cdots + dev_n}{n}$ |
+| Orientation      | Street Alignment                        | StrAli      | deg       | Building, Street       | sum, mean, variance     |                                         |
+| Distribution     | Street Profile Width                    | StrW        | m         | Street                 | sum, mean, variance     |                                         |
+| Distribution     | Street Profile Width Deviation          | StrWD       | m         | Street                 | sum, mean, variance     |                                         |
+| Distribution     | Street Profile Height                   | StrH        | m         | Street                 | sum, mean, variance     |                                         |
+| Distribution     | Street Profile Height Deviation         | StrHD       | m         | Street                 | sum, mean, variance     |                                         |
+| Distribution     | Street Profile Openness                 | StrOp       | ratio     | Building, Street       | sum, mean, variance     | $Ope_{sp} = 1 - \frac{\sum_{hit}}{2 \sum_{sec}}$ |
+| Distribution     | Height-Width Ratio                      | StrHW       | ratio     | Building, Street       | mean                    |                                         |
+| Dimension        | Street Segment Length                   | StrLen      | m         | Street                 | mean                    |                                         |
+| Dimension        | COINS Total Stroke Group Length         | StrCNS      |           | Street                 | mean                    |                                         |
+| Intensity        | Buildings per Meter of Street Segment   | BpM         | count/m   | Building, Street       | mean                    |                                         |
+| Shape            | Street Linearity                        | StrLin      | ratio     | Street                 | sum, mean, variance     | $Lin_{edg} = \frac{l_{eucl}}{l_{edg}}$ |
+| Connectivity     | Closeness Centrality                    | StrClo      |           | Street Network         |                          |                                         |
+| Connectivity     | Betweenness Centrality                  | StrBet      |           | Street Network         |                          |                                         |
+| Connectivity     | Squares Clustering Coefficient         | StrSCl      |           | Street Network         |                          |                                         |
+| Connectivity     | Cyclomatic Complexity                  | StrCyc      |           | Street Network         |                          |                                         |
+| Connectivity     | Edge Node Ratio                        | StrENR      |           | Street Network         |                          |                                         |
+| Connectivity     | Gamma                                  | StrGam      |           | Street Network         |                          |                                         |
+| Connectivity     | Node Degree of Junction                | StrDeg      |           | Street Network         |                          |                                         |
+| Connectivity     | Mean Distance to Neighbouring Nodes    | StrMDi      |           | Street Network         |                          |                                         |
+| Connectivity     | Local Meshedness                       | StrMes      |           | Street Network         |                          |                                         |
+| Connectivity     | Mean Node Degree                       | StrMND      | count     | Street Network         | mean                    |                                         |
+| Connectivity     | Node Density                           | StrND       |           | Street Network         |                          |                                         |
+
+
+:::{image} ./images/9bpjlb.gif
+:alt: A rotating 3D plot
+:width: 1000px
+:align: center
+:figcaption: PC1, PC4 and temperature of weather stations
+:::
+
 > We believe how we share and communicate scientific knowledge should evolve past the status quo of print-based publishing and all the limitations of paper.
 
-The communication and collaboration tools that we are building in the Project Jupyter are built to follow the FORCE11 recommendations (Bourne _et al._, 2012). Specifically:
+The communication and collaboration tools that we are building in the Project Jupyter are built to follow the FORCE11 recommendations [](doi:10.4230/DAGMAN.1.1.41). Specifically:
 
 1. rethink the unit and form of scholarly publication;
 2. develop tools and technologies to better support the scholarly lifecycle; and
@@ -46,19 +110,21 @@ In our paper we will give an overview of the MyST ecosystem, how to use MyST too
 
 ## Features of MyST
 
-MyST is focused on scientific writing, and ensuring that citations are first class both for writing and for reading (see Figure 1).
+MyST is focused on scientific writing, and ensuring that citations are first class both for writing and for reading (see [](#citations))..
 
-![](./images/citations.png)
-**Figure 1**: Citations are rendered with a popup directly inline.
+:::{figure} ./images/citations.png
+:label: citations
+Citations are rendered with a popup directly inline.
+:::
 
-MyST aims to show as much information in context as possible, for example, Figure 2 shows a reading experience for a referenced equation: you can immediately **click on the reference**, see the equation, all without loosing any context -- ultimately saving you time. Head _et al._ (2021) found that these ideas both improved the overall reading experience of articles as well as allowed researchers to answer questions about an article **26% faster** when compared to a traditional PDF!
+MyST aims to show as much information in context as possible, for example, Figure 2 shows a reading experience for a referenced equation: you can immediately **click on the reference**, see the equation, all without loosing any context -- ultimately saving you time. [](doi:10.1145/3411764.3445648) found that these ideas both improved the overall reading experience of articles as well as allowed researchers to answer questions about an article **26% faster** when compared to a traditional PDF!
 
-![](./images/equations.gif)
+![](./images/9bpjlb.gif)
 **Figure 2**: In context cross-references improve the reading experience.
 
 One of the important underlying goals of practicing reproducibility, sharing more of the methods and data behind a scientific work so that other researchers can both verify as well as build upon your findings. One of the exciting ways to pull for reproducibility is to make documents directly linked to data and computation! In Figure 3, we are showing outputs from a Jupyter Notebook directly part of the published scientific narrative.
 
-![](./images/interactive.gif)
+![](./images/9bpjlb.gif)
 **Figure 3**: Embedding data, interactivity and computation into a MyST article.
 
 To drive all of these features, the contents of a MyST document needs to be well defined. This is critical for powering interactive hovers, linked citations, and compatibility with scientific publishing standards like the Journal Article Metadata Tag Suite (JATS). We have an emerging specification for MyST, [`myst-spec`](https://spec.myst.tools), that aims to capture this information and transform it between many different formats, like PDF, Word, JSON, and JATS XML (Figure 4). This specification is arrived at through a community-centric MyST Enhancement Proposal ([MEP](https://compass.executablebooks.org/en/latest/meps.html)) process.
@@ -75,11 +141,8 @@ One of the common forms of scientific communication today is through PDF documen
 
 There are many opportunities to improve open-science communication, to make it more interactive, accessible, more reproducible, and both produce and use structured data throughout the research-writing process. The `mystjs` ecosystem of tools is designed with structured data at its core. We would love if you gave it a try -- learn to get started at <https://myst.tools>.
 
-## References
 
-Bourne, Philip E., Clark, Timothy W., Dale, Robert, De Waard, Anita, Herman, Ivan, Hovy, Eduard H., Shotton, David. (2012)"Improving The Future of Research Communications and e-Scholarship". FORCE11. doi:10.4230/DAGMAN.1.1.41
 
-Head, A., Lo, K., Kang, D., Fok, R., Skjonsberg, S., Weld, D. S., & Hearst, M. A. (2021, May). Augmenting Scientific Papers with Just-in-Time, Position-Sensitive Definitions of Terms and Symbols. Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems. 10.1145/3411764.3445648
 
 [2i2c]: https://2i2c.org/
 [curvenote]: https://curvenote.com
