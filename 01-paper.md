@@ -1,8 +1,8 @@
 ---
-title: Analysing 2-dimensional urban form around Freiburg's weather stations with respect to air temperature
+title: The effect of urban morphometry on the intra-urban variability of the heat island
 subject: Tutorial
 subtitle: Evolve your markdown documents into structured data
-short_title: How to MyST
+short_title: Analysis
 authors:
   - name: Lisa Winkler
     affiliations:
@@ -12,63 +12,63 @@ authors:
 license: CC-BY-4.0
 keywords: myst, markdown, open-science
 abstract: |
-  Calculating urban form parameters, aggregating to 100m, completing a principal component analysis, and analysing with respect to temperature
+  Analysing 2-dimensional urban form around Freiburg's weather stations with respect to air temperature
 ---
 
 ## Background
 
-Scientific communication today is designed around print documents and pay-walled access to content. Over the last decade, the open-science movement has accelerated the use of pre-print services and data archives that are vastly improving the accessibility of scientific content. However, these systems are not designed for communicating modern scientific outputs, which encompasses **so much more** than a paper-centric model of the scholarly literature.
+Building adjacency refers to how much buildings tend to join together into larger structures and is the number of joined built-up structures divided by number of buildings in the neighbourhood. Mean inter-building distance refers to the mean proximity between adjacent buildings in the neighbourhood. Adjacency is defined by a delaunay triangulation of the building polygons. Shared walls is defined as the length of shared walls of adjacent buildings. 
+
+Orientation is defined as the deviation of orientation of the bounding rectangle from cardinal directions, alignment is the mean deviation of orientation of adjacent buildings (defined by delaunay triangulation) and street alignment is the deviation of the building orientation from the street orientation.
+
+Width of a street profile is the mean length of a street profile sections along street segment. Street openness is the ratio of street profile sections intersecting buildings and it refers to the presence of buildings along the street; that is, wider gaps between buildings will lead to a higher openness. Linearity of a street segment is the ratio of Euclidean distance between the first and the last point of a line and its length https://onlinelibrary.wiley.com/doi/full/10.1111/gean.12302
 
 ### Urban form parameters
-| **Category**    | **Parameter**                             | **Abbrev.** | **Unit**  | **Element**            | **Aggregation**         | **Equation**                           |
-|------------------|-------------------------------------------|-------------|-----------|-------------------------|--------------------------|-----------------------------------------|
-| Dimension        | Building Area                            | BuAre       | m²        | Building               | count, sum, mean, std , median, min , max    |                                         |
-| Dimension        | Building Height                          | BuHt        | m²        | Building               | sum, mean, std     |                                         |
-| Dimension        | Building Perimeter                       | BuPer       | m         | Building               | sum, mean, variance     |                                         |
-| Dimension        | Longest Axis Length                      | BuLAL       | m         | Building               | sum, mean, variance     |                                         |
-| Dimension        | Centroid Corner Distance                 | BuCCD       | m         | Building               | sum, mean, variance     |                                         |
-| Dimension        | Number of Corners                        | BuCor       | m         | Building               | sum, mean, variance     |                                         |
-| Dimension        | Courtyard Area                           | CyAre       | m         | Building               | sum, mean, variance     |                                         |
-| Dimension        | Courtyard Index                          | CyInd       | ratio     | Building               | mean                    |                                         |
-| Shape            | Circular Compactness                    | BuCCo       |           | Building               |                          |                                         |
-| Shape            | Compactness Weighted Axis               | BuCWA       |           | Building               |                          |                                         |
-| Shape            | Convexity                                | BuCon       |           | Building               |                          |                                         |
-| Shape            | Elongation                               | BuElo       |           | Building               |                          |                                         |
-| Shape            | Equivalent Rectangular Index            | BuERI       |           | Building               |                          |                                         |
-| Shape            | Facade Ratio                            | BuFR        |           | Building               |                          | $area/perimeter$                       |
-| Shape            | Form Factor                             | BuFF        |           | Building               |                          |                                         |
-| Shape            | Fractal Dimension                       | BuFD        |           | Building               |                          |                                         |
-| Shape            | Rectangularity                          | BuRec       |           | Building               |                          |                                         |
-| Shape            | Shape Index                             | BuShI       |           | Building               |                          |                                         |
-| Shape            | Square Compactness                     | BuSqC       |           | Building               |                          |                                         |
-| Shape            | Squareness                              | BuSqu       |           | Building               |                          |                                         |
-| Proximity        | Building Adjacency                      | BuAdj       | ratio     | Neighbourhood          | -                        | $BuAdj_{blg} = \frac{\sum blg_{adj}}{\sum blg}$ |
-| Proximity        | Mean Inter-Building Distance            | IBD         | m         | Neighbourhood          | -                        | $IBD_{blg} = \frac{1}{n} \sum_{i=1}^{n} d_{blg, blg_i}$ |
-| Proximity        | Shared Walls Ratio                      | SWR         | m²        | Building               | mean                    |                                         |
-| Orientation      | Orientation                             | BuOri       | deg       | Building               | sum, mean, variance     |                                         |
-| Orientation      | Alignment                               | BuAli       | deg       | Building               | sum, mean, variance     | $\frac{1}{n} \sum_{i=1}^{n} dev_i = \frac{dev_1 + dev_2 + \cdots + dev_n}{n}$ |
-| Orientation      | Street Alignment                        | StrAli      | deg       | Building, Street       | sum, mean, variance     |                                         |
-| Distribution     | Street Profile Width                    | StrW        | m         | Street                 | sum, mean, variance     |                                         |
-| Distribution     | Street Profile Width Deviation          | StrWD       | m         | Street                 | sum, mean, variance     |                                         |
-| Distribution     | Street Profile Height                   | StrH        | m         | Street                 | sum, mean, variance     |                                         |
-| Distribution     | Street Profile Height Deviation         | StrHD       | m         | Street                 | sum, mean, variance     |                                         |
-| Distribution     | Street Profile Openness                 | StrOp       | ratio     | Building, Street       | sum, mean, variance     | $Ope_{sp} = 1 - \frac{\sum_{hit}}{2 \sum_{sec}}$ |
-| Distribution     | Height-Width Ratio                      | StrHW       | ratio     | Building, Street       | mean                    |                                         |
-| Dimension        | Street Segment Length                   | StrLen      | m         | Street                 | mean                    |                                         |
-| Dimension        | COINS Total Stroke Group Length         | StrCNS      |           | Street                 | mean                    |                                         |
-| Intensity        | Buildings per Meter of Street Segment   | BpM         | count/m   | Building, Street       | mean                    |                                         |
-| Shape            | Street Linearity                        | StrLin      | ratio     | Street                 | sum, mean, variance     | $Lin_{edg} = \frac{l_{eucl}}{l_{edg}}$ |
-| Connectivity     | Closeness Centrality                    | StrClo      |           | Street Network         |                          |                                         |
-| Connectivity     | Betweenness Centrality                  | StrBet      |           | Street Network         |                          |                                         |
-| Connectivity     | Squares Clustering Coefficient         | StrSCl      |           | Street Network         |                          |                                         |
-| Connectivity     | Cyclomatic Complexity                  | StrCyc      |           | Street Network         |                          |                                         |
-| Connectivity     | Edge Node Ratio                        | StrENR      |           | Street Network         |                          |                                         |
-| Connectivity     | Gamma                                  | StrGam      |           | Street Network         |                          |                                         |
-| Connectivity     | Node Degree of Junction                | StrDeg      |           | Street Network         |                          |                                         |
-| Connectivity     | Mean Distance to Neighbouring Nodes    | StrMDi      |           | Street Network         |                          |                                         |
-| Connectivity     | Local Meshedness                       | StrMes      |           | Street Network         |                          |                                         |
-| Connectivity     | Mean Node Degree                       | StrMND      | count     | Street Network         | mean                    |                                         |
-| Connectivity     | Node Density                           | StrND       |           | Street Network         |                          |                                         |
+| **Category**    | **Parameter**                            | **Abbrev.** | **Unit**  | **Element**            | **Aggregation**         | **Equation**                           | **Description**\
+|------------------|-----------------------------------------|-------------|-----------|------------------------|--------------------------|-----------------------------------------|--------------------------|
+| Dimension        | Building Area                           | BuAre       | m²        | Building                | count, sum, mean, std    |                                         | |
+| Dimension        | Building Height                         | BuHt        | m²        | Building                | mean, std     |                                         | |
+| Dimension        | Building Perimeter                      | BuPer       | m         | Building                | mean, std     |                                        | |
+| Dimension        | Longest Axis Length                     | BuLAL       | m         | Building                | mean, std     |  $max(axis_1,axis_2,...,axis_n)$      | Length of the longest axis of object |
+| Dimension        | Centroid Corner Distance                | BuCCD       | m         | Building                | mean, std     |                                         | Distance between centroid and corner |
+| Dimension        | Number of Corners                       | BuCor       | count     | Building                | mean, std     |                                         | |
+| Dimension        | Courtyard Area                          | CyAre       | m         | Building                | sum, mean, std     |                                         | |
+| Dimension        | Courtyard Index                         | CyInd       | ratio     | Building                | mean, std             |                                       | Area of courtyard over total area of building |
+| Shape            | Compactness Weighted Axis               | BuCWA       | m         | Building                | mean, std                    | $d_i = (\frac{\pi}{4}-\frac{16area_i}{perimeter_i^{2}})$ | Longest axis length weighted by compactness |
+| Shape            | Convexity                               | BuCon       | ratio     | Building                | mean, std        |  $\frac{\text{area}}{\text{area of convex hull}}$        | |
+| Shape            | Elongation                              | BuElo       | ratio     | Building                | mean, std     | $\frac{\frac{p - \sqrt{p^2 - 16a}}{4}}{\frac{p}{2} - \frac{p - \sqrt{p^2 - 16a}}{4}}$ | Elongation of minimum bounding rectangle |
+| Shape            | Equivalent Rectangular Index            | BuERI       | ratio     | Building                | mean, std   | $\sqrt{\frac{\text{area}}{\text{area of bounding rectangle}}} \cdot \frac{\text{perimeter of bounding rectangle}}{\text{perimeter}}$ |
+| Shape            | Facade Ratio                            | BuFR        | ratio     | Building                | mean, std               | $area/perimeter$                       |
+| Shape            | Form Factor                             | BuFF        | ratio     | Building                | mean, std               | $\frac{(perimeter*height)+area}{volume^{2/3}}$ | |
+| Shape            | Fractal Dimension                       | BuFD        | ratio     | Building                | mean, std               | $\frac{2\log\left(\frac{\text{perimeter}}{4}\right)}{\log(\text{area})}$  | |
+| Shape            | Rectangularity                          | BuRec       | ratio     | Building                | mean, std               | $\frac{\text{area}}{\text{area of minimum bounding rectangle}}$ | |
+| Shape            | Shape Index                             | BuShI       | ratio     | Building                | mean, std               | $\frac{\sqrt{\frac{\text { area }}{\pi}}}{0.5 * \text { longest axis }}$ | |
+| Shape            | Square Compactness                      | BuSqC       | ratio     | Building                | mean, std               | $\left(\frac{4 \sqrt{\text { area }}}{\text { perimeter }}\right)^2$ | |
+| Shape            | Squareness                              | BuSqu       | deg       | Building                | mean, std               |                                         | Mean deviation of angles at corners from 90 degrees |
+| Proximity        | Building Adjacency                      | BuAdj       | ratio     | Neighbourhood           | -                       | $BuAdj_{blg} = \frac{\sum blg_{adj}}{\sum blg}$ | How much buildings tend to join together into larger structures |
+| Proximity        | Mean Inter-Building Distance            | BuIBD       | m         | Neighbourhood           | -                       | $IBD_{blg} = \frac{1}{n} \sum_{i=1}^{n} d_{blg, blg_i}$ |
+| Proximity        | Shared Walls Ratio                      | BuSWR       | ratio     | Building                | mean, std               | $\frac{length of shared walls}{sum of building perimeter}$ | |
+| Orientation      | Orientation                             | BuOri       | deg       | Building                | mean, std     |                                         | Deviation of orientation of the bounding rectangle from cardinal directions |
+| Orientation      | Alignment                               | BuAli       | deg       | Building                | mean, std     | $\frac{1}{n} \sum_{i=1}^{n} dev_i = \frac{dev_1 + dev_2 + \cdots + dev_n}{n}$ |  Mean deviation of orientation of adjacent buildings |
+| Orientation      | Street Alignment                        | StrAli      | deg       | Building, Street Segment | mean, std    |                                         | Deviation of the building orientation from the street orientation |
+| Distribution     | Street Width                            | StrW        | m         | Street Segment           | mean, std     |                                         |
+| Distribution     | Street Width Deviation                  | StrWD       | m         | Street Segment           | mean, std     |                                         | Deviation of width along a street segment
+| Distribution     | Street Openness                         | StrOpe      | ratio     | Building, Street Segment | mean, std     | $Ope_{sp} = 1 - \frac{\sum_{hit}}{2 \sum_{sec}}$ | To what degree a street is surrounded by buildings |
+| Distribution     | Street Height-Width Ratio               | StrHW       | ratio     | Building, Street Segment | mean, std               |                                         | Height to width ratio of buildings along a street segment |
+| Dimension        | Street Segment Length                   | StrLen      | m         | Street  Segment          | mean, std               |                                         | Length of individual street segment
+| Dimension        | Total Street Length                     | StrCNS      | m         | Street Network           | mean, std               |                                         | Total length of continuous street segments |
+| Intensity        | Buildings per Meter of Street Segment   | BpM         | count/m   | Building, Street Segment | mean, std               | $\frac{\text{no. of buildings along street segment}}{\text{length of street segment}}$ | |
+| Shape            | Street Linearity                        | StrLin      | ratio     | Street Segment           | mean, std     | $Lin_{edg} = \frac{l_{eucl}}{l_{edg}}$ | Ratio of length of segment between first and last point to length of street segment |
+| Connectivity     | Local Closeness Centrality (400m,1200m) | StrClo      | 1/m       | Street Network         | mean, std               |                                         | Average distance to every other node from each node within 400m and 1200m radius |
+| Connectivity     | Local Betweenness Centrality (400m,1200m)| StrBet     | ratio    | Street Network         | mean, std   | $c_B(v)=\sum_{s, t \in V} \frac{\sigma(s, t \mid v)}{\sigma(s, t)}$ networkx |  The extent to which node lies on paths between other nodes |
+| Connectivity     | Squares Clustering Coefficient         | StrSCl      | ratio     | Street Network         | mean, std                 |                                         | The degree to which nodes in graph tend to cluster together |
+| Connectivity     | Cyclomatic Complexity                  | StrCyc      | count     | Street Network         | mean, std                 | $\alpha=e-v+1$                 | 
+| Connectivity     | Edge Node Ratio                        | StrENR      | ratio     | Street Network         | mean, std                |   $\alpha=\frac{e}{v}$               | Ratio of edges to nodes |
+| Connectivity     | Gamma                                  | StrGam      | ratio     | Street Network         | mean, std                | $\alpha=\frac{e}{3(v-2)}$                  | Connectivity ratio of edges to nodes |
+| Connectivity     | Node Degree of Junction                | StrDeg      | count     | Street Network         | mean, std                | $\operatorname{deg}_{\text {node }_i}=\sum_j e d g_{i j}$ | Number of edges connected to node |
+| Connectivity     | Node Density                          | StrND       | count/m   | Street Network         | -                        |                                         | Number of nodes / Cumulative length of street network within neighbourhood |
+| Connectivity     | Local Meshedness                       | StrMes      | ratio     | Street Network         | mean, std                |                                         | Ratio of faces in a network to maximum loops in network with same number of nodes |
+
 
 
 :::{image} ./images/9bpjlb.gif
