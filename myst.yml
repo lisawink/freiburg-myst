@@ -13,3 +13,4 @@ site:
   # options:
   #   favicon: favicon.ico
   #   logo: site_logo.png
+  max-width: 2000px # Set the maximum width of the site

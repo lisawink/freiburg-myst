@@ -1,8 +1,8 @@
 ---
-title: The effect of urban morphometry on the intra-urban variability of the heat island
+title: The effect of urban form on the intra-urban variability of the heat island
 subject: Tutorial
-subtitle: Evolve your markdown documents into structured data
-short_title: Analysis
+subtitle: 2-dimensional building and street parameters
+short_title: Overview
 authors:
   - name: Lisa Winkler
     affiliations:
@@ -10,7 +10,6 @@ authors:
     orcid: 0000-0002-7859-8394
     email: lisa.winkler@meteo.uni-freiburg.de
 license: CC-BY-4.0
-keywords: myst, markdown, open-science
 abstract: |
   Analysing 2-dimensional urban form around Freiburg's weather stations with respect to air temperature
 ---
@@ -22,6 +21,8 @@ Building adjacency refers to how much buildings tend to join together into large
 Orientation is defined as the deviation of orientation of the bounding rectangle from cardinal directions, alignment is the mean deviation of orientation of adjacent buildings (defined by delaunay triangulation) and street alignment is the deviation of the building orientation from the street orientation.
 
 Width of a street profile is the mean length of a street profile sections along street segment. Street openness is the ratio of street profile sections intersecting buildings and it refers to the presence of buildings along the street; that is, wider gaps between buildings will lead to a higher openness. Linearity of a street segment is the ratio of Euclidean distance between the first and the last point of a line and its length https://onlinelibrary.wiley.com/doi/full/10.1111/gean.12302
+
+Parameters calculated using `momepy` and `geopandas`
 
 ### Urban form parameters
 | **Category**    | **Parameter**                            | **Abbrev.** | **Unit**  | **Element**            | **Aggregation**         | **Equation**                           | **Description**\
@@ -45,9 +46,9 @@ Width of a street profile is the mean length of a street profile sections along 
 | Shape            | Shape Index                             | BuShI       | ratio     | Building                | mean, std               | $\frac{\sqrt{\frac{\text { area }}{\pi}}}{0.5 * \text { longest axis }}$ | |
 | Shape            | Square Compactness                      | BuSqC       | ratio     | Building                | mean, std               | $\left(\frac{4 \sqrt{\text { area }}}{\text { perimeter }}\right)^2$ | |
 | Shape            | Squareness                              | BuSqu       | deg       | Building                | mean, std               |                                         | Mean deviation of angles at corners from 90 degrees |
-| Proximity        | Building Adjacency                      | BuAdj       | ratio     | Neighbourhood           | -                       | $BuAdj_{blg} = \frac{\sum blg_{adj}}{\sum blg}$ | How much buildings tend to join together into larger structures |
-| Proximity        | Mean Inter-Building Distance            | BuIBD       | m         | Neighbourhood           | -                       | $IBD_{blg} = \frac{1}{n} \sum_{i=1}^{n} d_{blg, blg_i}$ |
-| Proximity        | Shared Walls Ratio                      | BuSWR       | ratio     | Building                | mean, std               | $\frac{length of shared walls}{sum of building perimeter}$ | |
+| Distribution        | Building Adjacency                      | BuAdj       | ratio     | Neighbourhood           | -                       | $BuAdj_{blg} = \frac{\sum blg_{adj}}{\sum blg}$ | How much buildings tend to join together into larger structures |
+| Distribution        | Mean Inter-Building Distance            | BuIBD       | m         | Neighbourhood           | -                       | $IBD_{blg} = \frac{1}{n} \sum_{i=1}^{n} d_{blg, blg_i}$ |
+| Distribution        | Shared Walls Ratio                      | BuSWR       | ratio     | Building                | mean, std               | $\frac{length of shared walls}{sum of building perimeter}$ | |
 | Orientation      | Orientation                             | BuOri       | deg       | Building                | mean, std     |                                         | Deviation of orientation of the bounding rectangle from cardinal directions |
 | Orientation      | Alignment                               | BuAli       | deg       | Building                | mean, std     | $\frac{1}{n} \sum_{i=1}^{n} dev_i = \frac{dev_1 + dev_2 + \cdots + dev_n}{n}$ |  Mean deviation of orientation of adjacent buildings |
 | Orientation      | Street Alignment                        | StrAli      | deg       | Building, Street Segment | mean, std    |                                         | Deviation of the building orientation from the street orientation |
@@ -69,16 +70,20 @@ Width of a street profile is the mean length of a street profile sections along 
 | Connectivity     | Node Density                          | StrND       | count/m   | Street Network         | -                        |                                         | Number of nodes / Cumulative length of street network within neighbourhood |
 | Connectivity     | Local Meshedness                       | StrMes      | ratio     | Street Network         | mean, std                |                                         | Ratio of faces in a network to maximum loops in network with same number of nodes |
 
+### Simple linear model with two PCs
 
+1. PCA of all the parameters aggregated to 150m around the weather stations;
+2. choose the PCs with the strongest relationship to temperature (from individual linear regression); and
+3. plot the linear regression of both PCs with temperature.
 
-:::{image} ./images/9bpjlb.gif
+:::{image} ./images/9bxvl4.gif
 :alt: A rotating 3D plot
 :width: 1000px
 :align: center
 :figcaption: PC1, PC4 and temperature of weather stations
 :::
 
-> We believe how we share and communicate scientific knowledge should evolve past the status quo of print-based publishing and all the limitations of paper.
+> `R^2: 0.559788042465736`
 
 The communication and collaboration tools that we are building in the Project Jupyter are built to follow the FORCE11 recommendations [](doi:10.4230/DAGMAN.1.1.41). Specifically:
 
