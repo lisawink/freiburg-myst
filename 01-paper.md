@@ -25,7 +25,7 @@ Width of a street profile is the mean length of a street profile sections along 
 Parameters calculated using `momepy` and `geopandas`
 
 ### Urban form parameters
-| **Category**    | **Parameter**                            | **Abbrev.** | **Unit**  | **Element**            | **Aggregation**         | **Equation**                           | **Description**\
+| **Category**    | **Parameter**                            | **Abbrev.** | **Unit**  | **Element**            | **Aggregation**         | **Equation**                           | **Description** |
 |------------------|-----------------------------------------|-------------|-----------|------------------------|--------------------------|-----------------------------------------|--------------------------|
 | Dimension        | Building Area                           | BuAre       | m²        | Building                | count, sum, mean, std    |                                         | |
 | Dimension        | Building Height                         | BuHt        | m²        | Building                | mean, std     |                                         | |
