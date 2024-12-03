@@ -91,4 +91,8 @@ Width of a street profile is the mean length of a street profile sections along 
 
 > `R^2: 0.559788042465736`
 
+### Results
+
+- Diversity of building shape in Freiburg leads to higher night-time temperatures
+  - function of variance in building shape as well as skewness from outliers (extreme building shapes)
 
