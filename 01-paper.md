@@ -19,7 +19,7 @@ abstract: |
 
 Parameters calculated using `momepy` and `geopandas`
 
-### 2D Urban form parameters
+### 2D Urban form Parameters
 | **Category**    | **Parameter**                            | **Abbrev.** | **Unit**  | **Element**            | **Aggregation**         | **Equation**                           | **Description** | **Source** |
 |------------------|-----------------------------------------|-------------|-----------|------------------------|--------------------------|-----------------------------------------|--------------------------|--------------|
 | Dimension        | Building Area                           | BuAre       | m²        | Building                | count, sum, mean, std    |                                         | | geopandas |
@@ -84,7 +84,7 @@ Parameters calculated using `momepy` and `geopandas`
 
 Parameters calculated using `3d-building-metrics`
 
-### Urban form parameters
+### 3D Urban form Parameters
 | **Category**    | **Parameter**                            | **Abbrev.** | **Unit**  | **Element**            | **Aggregation**         | **Equation**       | **Description**                | **Source** |
 |------------------|-----------------------------------------|-------------|-----------|------------------------|--------------------------|-----------------------------------------|---------------------------------------|--------|
 | Dimension        | Building Height | BuHt        | m        | Building                | mean, std   || | LoD1 |
