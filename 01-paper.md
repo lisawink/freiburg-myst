@@ -35,7 +35,7 @@ Parameters calculated using `momepy` and `geopandas`
 | Shape            | Elongation                              | BuElo       | ratio     | Building                | mean, std     | $\frac{\frac{p - \sqrt{p^2 - 16a}}{4}}{\frac{p}{2} - \frac{p - \sqrt{p^2 - 16a}}{4}}$ | Elongation of minimum bounding rectangle |
 | Shape            | Equivalent Rectangular Index            | BuERI       | ratio     | Building                | mean, std   | $\sqrt{\frac{\text{area}}{\text{area of bounding rectangle}}} \cdot \frac{\text{perimeter of bounding rectangle}}{\text{perimeter}}$ |
 | Shape            | Facade Ratio                            | BuFR        | ratio     | Building                | mean, std               | $area/perimeter$                       |
-| Shape            | Form Factor                             | BuFF        | ratio     | Building                | mean, std               | $\frac{(perimeter*height)+area}{volume^{2/3}}$ | |
+| Shape            | Form Factor                             | BuFF        | ratio     | Building                | mean, std               | $\frac{(perimeter*height)+area}{volume^{2/3}}$ | Surface to volume ratio |
 | Shape            | Fractal Dimension                       | BuFD        | ratio     | Building                | mean, std               | $\frac{2\log\left(\frac{\text{perimeter}}{4}\right)}{\log(\text{area})}$  | perimeter-area method that quantifies the degree of complexity | momepy |
 | Shape            | Fractality                       | BuFra        | ratio     | Building                | mean, std               | $\mathrm{FR}_2=1-\frac{\log \left(A_{\mathrm{PN}}\right)}{2 \times \log \left(P_{\mathrm{PN}}\right)}$ | measures the edge roughness orsmoothness | 3d-building-metrics |
 | Shape            | Rectangularity                          | BuRec       | ratio     | Building                | mean, std               | $\frac{\text{area}}{\text{area of minimum bounding rectangle}}$ | area deviation between a polygon and its minimum area bounding rectangle - polygon’s degree of being curved inward | momepy |
@@ -108,9 +108,27 @@ Parameters calculated using `3d-building-metrics`
 | Shape        | Range                       | BuRan_3D   | ratio | Building | mean, std | $\frac{\sqrt[3]{\frac{3 \cdot V_{\text{MS}}}{4 \cdot \pi}}}{r_{\text{SCS}}}$ | Measures the distance between the furthest faces of a polyhedron, sensitive to remote sections | 3d-building-metrics |
 | Shape        | Equivalent Prism Index      | BuEPI_3D   | ratio | Building | mean, std | $\left(\sqrt[3]{\frac{V_{\text{MS}}}{V_{\text{OOBB}}}}\right)^2 \times \frac{A_{\text{OOBB}}}{A_{\text{MS}}}$ | deviation of a polyhedron from an equivalent cuboid by scaling its minimum volume bounding box to match its volume | 3d-building-metrics |
 | Shape        | Roughness (Shape Boundary)  | BuRough_3D    | ratio | Building | mean, std | $\frac{\mu_{r_{\text{ibp}}}^3}{V_{\text{MS}} + A_{\text{MS}}^{\frac{3}{2}}} \times 48.735$ | Created as a measure of compactness. Advantages: (1) Less sensitive to elongation (aspect ratio of a polyhedron), and (2) more responsive to boundary roughness (intrusions and protrusions) | 3d-building-metrics |
-| Shape        | Form Factor                 | BuFF_3D    | ratio | Building | mean, std | $\frac{A}{V^{\frac{2}{3}}}$ | compactness of a 3Dobject which attempts to removethe bias introduced by the size ofan object | 3d-building-metrics |
+| Shape        | Form Factor                 | BuFF_3D    | ratio | Building | mean, std | $\frac{A}{V^{\frac{2}{3}}}$ | compactness of a 3D object which attempts to remove the bias introduced by the size of an object | 3d-building-metrics |
 | Distribution | Shared Walls Area           | BuSWA_3D   | ratio | Building | mean, std || Area of shared walls| 3d-building-metrics |
 | Distribution | Sky View Factor             | BuSVF_3D   | ratio | Building | mean, std || | DSM, Ferdi |
+
+### Street Parameters
+
+| **Category** | **Parameter**               | **Abbrev.**| **Unit**| **Element**            | **Aggregation**         | **Equation**       | **Description**                | **Source** |
+|--------------|-----------------------------|------------|---------|------------------------|--------------------------|-----------------------------------------|---------------------------------------|--------|
+| Dimension    | Street Length             | StrLen  | m     | Street | mean, std || | momepy |
+| Dimension    | Street Width              | StrW    | m     | Street | mean, std || | momepy |
+| Dimension    | Street Width Deviation    | StrWD   | m     | Street | mean, std || | momepy |
+| Dimension    | Street Openness           | StrOpe  | ratio | Building | mean, std || Ratio of street profile sections intersecting buildings and it refers to the presence of buildings along the street; wider gaps between buildings will lead to a higher openness | momepy |
+| Dimension    | Street Height             | StrH    | m     | Building | mean, std || | momepy |
+| Dimension    | Street Height Deviation   | StrHD   | m     | Building | mean, std || | momepy |
+| Dimension    | Street Height-Width Ratio | StrHW   | ratio | Building | mean, std || | momepy |
+| Shape        | Street Linearity          | StrW    | ratio | Street | mean, std || Ratio of Euclidean distance between the first and the last point of a line and its length https://onlinelibrary.wiley.com/doi/full/10.1111/gean.12302 | momepy |
+| Intensity    | Buildings per Meter       | BpM     | count/m | Building | mean, std || | momepy |
+| Distribution | Street Alignment          | StrAli  |       | Building, Street | mean, std || Deviation of the building orientation from the street orientation | momepy |
+| Connectivity | Closeness Centrality      | StrClo  |       | Street Network | mean, std || | momepy |
+
+
 
 
 ### Definitions
