@@ -43,8 +43,8 @@ Parameters calculated using `momepy` and `geopandas`
 | Shape            | Shape Index                             | BuShI       | ratio     | Building                |  $\frac{\sqrt{\frac{\text { area }}{\pi}}}{0.5 * \text { longest axis }}$ | |
 | Shape            | [Square Compactness](BuSqC.html)        | BuSqC       | ratio     | Building                | $\left(\frac{4 \sqrt{\text { area }}}{\text { perimeter }}\right)^2$ | |
 | Shape            | Squareness (Corner Deviation)       | BuCorDev       | deg       | Building                |                         | Mean deviation of angles at corners from 90 degrees |
-| Shape        | Circularity | BuCir      | ratio        | Building                | mean, std     | $\frac{A_{\text{PN}}}{A_{\text{EPC}}} = \frac{4 \pi A_{\text{PN}}}{P_{\text{PN}}^2}$| Area deviation between a polygon and its equal-perimeter circle | 3d-building-metrics |
-| Shape            | Convexity     | BuCon      | ratio     | Building                | mean, std        |  $\frac{\text{area}}{\text{area of convex hull}}$        | area deviation between a polygon and its convex hull, revealing curvature. | 3d-building-metrics |
+| Shape        | Circularity | BuCir      | ratio        | Building                | $\frac{A_{\text{PN}}}{A_{\text{EPC}}} = \frac{4 \pi A_{\text{PN}}}{P_{\text{PN}}^2}$| Area deviation between a polygon and its equal-perimeter circle | 3d-building-metrics |
+| Shape            | Convexity     | BuCon      | ratio     | Building                |  $\frac{\text{area}}{\text{area of convex hull}}$        | area deviation between a polygon and its convex hull, revealing curvature. | 3d-building-metrics |
 | Shape            | Fractality                       | BuFra        | ratio     | Building                |  $\mathrm{FR}_3=1-\frac{\log \left(V_{\mathrm{MS}}\right)}{\frac{3}{2} \times \log \left(A_{\mathrm{MS}}\right)}$ | edge roughness or smoothness | 3d-building-metrics |
 | Shape            | [Squareness](visualisations/BuSqu.ipynb)  | BuSqu       | ratio     | Building                |  $\frac{P_{\text{EAC}}}{P_{\text{PN}}} = \frac{4 \sqrt{A_{\text{PN}}}}{P_{\text{PN}}}$ | perimeter deviation between a polygon and its equal-area square | 3d-building-metrics |
 | Shape            | Cohesion                          | BuCoh       | ratio     | Building                |  $\frac{0.9054 \times \sqrt{\frac{A_{\text{PN}}}{\pi}}}{\frac{1}{n \cdot (n - 1)} \sum_{i=1}^{n} \sum_{j=1}^{n} d_{\text{igp}_{ij}}}$ | Overall accessibility from all points to others within a polygon | 3d-building-metrics |
@@ -87,8 +87,8 @@ Parameters calculated using `momepy` and `geopandas`
 Parameters calculated using `3d-building-metrics`
 
 ### 3D Urban form Parameters
-| **Category** | **Parameter**               | **Abbrev.**| **Unit**| **Element**            | **Aggregation**         | **Equation**       | **Description**                | **Source** |
-|--------------|-----------------------------|------------|---------|------------------------|--------------------------|-----------------------------------------|---------------------------------------|--------|
+| **Category** | **Parameter**               | **Abbrev.**| **Unit**| **Element**            |  **Equation**       | **Description**                | **Source** |
+|--------------|-----------------------------|------------|---------|------------------------|--------------------|----------------------------------|--------|
 | Dimension    | [Building Height](BuHt.html)| BuHt_3D    | m     | Building || | LoD1 |
 | Dimension    | [Surface Area](BuSA_3D.html)| BuSA_3D    | m²    | Building || | 3d-building-metrics |
 | Dimension    | [Volume](BuVol_3D.html)     | BuVol_3D   | m²    | Building || | 3d-building-metrics |
