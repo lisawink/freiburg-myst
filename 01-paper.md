@@ -21,7 +21,7 @@ Parameters calculated using `momepy` and `geopandas`
 
 ### 2D Urban form Parameters
 | **Category**    | **Parameter**                            | **Abbrev.** | **Unit**  | **Element**            | **Equation**                           | **Description** | **Source** |
-|------------------|-----------------------------------------|-------------|-----------|------------------------|--------------------------|-----------------------------------------|--------------------------|--------------|
+|------------------|-----------------------------------------|-------------|-----------|------------------------|--------------------------|-----------------------------------------|--------------------------|
 | Dimension        | [Building Number](BuAre.html)                          | BuNum       | count        | Building            |               | Number of buildings | geopandas |
 | Dimension        | [Building Area](BuAre.html)                          | BuAre       | m²        | Building                |                                          | | geopandas |
 | Dimension        | [Building Perimeter](map.html)                      | BuPer       | m         | Building                |                                        | | momepy |
